@@ -1,34 +1,65 @@
 # sgs-peritos
 
-**Acesso simples às séries temporais do SGS (Sistema Gerenciador de Séries
-Temporais) do Banco Central do Brasil — pensado para peritos.**
+**As taxas médias de juros do Banco Central, prontas para o perito — sem caçar
+código de série no SGS.**
 
-O SGS é a base pública do Bacen com milhares de séries econômicas: Selic, CDI,
-IPCA, INPC, IGP-M, dólar, taxas de juros por modalidade de crédito,
-inadimplência por estado/região e muito mais. Este pacote dá acesso direto a
-essas séries em Python, devolvendo um `DataFrame` do pandas pronto para uso em
-laudos, planilhas e cálculos periciais.
+Ferramenta para **peritos bancários, peritos trabalhistas, contadores e
+advogados** que precisam dos números oficiais do Banco Central do Brasil para
+revisão de contratos, liquidação de sentença, superendividamento e perícia
+financeira em geral.
 
-> ⚠️ **Aviso pericial:** os valores vêm direto da API pública do BCB. Antes de
-> citar qualquer série em laudo, confirme o **nome oficial** e a metodologia da
-> série no localizador do próprio Banco Central (link no final). Códigos de
-> crédito por modalidade mudam conforme a base metodológica.
+Autor e curadoria: **Edilson Aguiais** — advogado (OAB-GO 59.889), contador
+(CRC-GO 27.798), economista (CORECON-GO 2.337/D), professor e perito.
 
 ---
 
-## Créditos e licença
+## Por que isso importa para o perito
 
-Este projeto é **MIT**. O núcleo de acesso ao SGS é **derivado do excelente
-projeto [`python-bcb`](https://github.com/wilsonfreitas/python-bcb) de Wilson
-Freitas** (© 2021, MIT). Esta distribuição preserva o aviso de copyright
-original, conforme exige a licença MIT, e adiciona:
+Na perícia bancária e trabalhista, o erro mais comum — inclusive de quem tenta
+usar IA sem critério — é **trabalhar com a taxa pactuada/divulgada pela própria
+instituição financeira**. Essa não é a referência correta.
 
-- empacotamento independente focado em SGS;
-- um **catálogo curado de códigos úteis em perícia** (validados ao vivo);
-- um **script pronto** que gera CSV de taxas de financiamento de veículo.
+A referência é a **taxa MÉDIA de juros praticada pelo mercado**, por
+modalidade, que o **Banco Central apura e divulga oficialmente** no SGS (Sistema
+Gerenciador de Séries Temporais). É com ela que se demonstra abusividade,
+recalcula o contrato e se sustenta o laudo.
 
-Curadoria e adaptações: **Edilson Aguiais** (© 2026). Veja o arquivo
-[`LICENSE`](LICENSE).
+O problema: essas séries estão espalhadas em **milhares de códigos numéricos** e
+o perito perde tempo (e erra) tentando achar a série certa. Já vi código de
+*aquisição de veículos* ser usado como se fosse *crédito pessoal* — o número sai
+errado e o laudo cai.
+
+**Este pacote resolve isso:** entrega as taxas médias de juros de **todas as
+modalidades de crédito** (PF e PJ), com o nome correto e o código já validado
+contra o catálogo oficial do BCB, acessíveis em uma linha de Python.
+
+---
+
+## O que tem aqui (catálogo curado e validado)
+
+Todas as **modalidades de taxa média de juros** das operações de crédito com
+recursos livres, em versão **anual (% a.a.)** e **mensal (% a.m.)**:
+
+**Pessoa Física** — crédito pessoal não consignado · consignado (privado,
+público, INSS, total) · aquisição de veículos · aquisição de outros bens ·
+cheque especial · cartão de crédito (rotativo, parcelado, total) · arrendamento
+mercantil · desconto de cheques · e o total PF.
+
+**Pessoa Jurídica** — capital de giro (até/acima de 365 dias, rotativo, total) ·
+desconto de duplicatas e recebíveis · conta garantida · cheque especial ·
+antecipação de faturas de cartão · aquisição de veículos/bens · vendor · compror
+· ACC · financiamento a importações/exportações · cartão de crédito · e o total
+PJ.
+
+> Cada código foi conferido contra o catálogo oficial de dados abertos do BCB
+> (nome da série) **e** pela equivalência `(1 + mensal/100)¹² − 1 ≈ anual`.
+
+Como apoio (correção monetária e referência), também inclui os índices macro:
+**Selic, CDI, IPCA, INPC, IGP-M e dólar PTAX**.
+
+> ⚠️ **Uso pericial:** os dados vêm direto da API pública do BCB. Confirme sempre
+> a modalidade correta para o caso concreto — o pacote facilita o acesso, mas a
+> escolha da série adequada é responsabilidade técnica do perito.
 
 ---
 
@@ -44,86 +75,85 @@ Dependências: `pandas`, `httpx`, `tenacity`.
 
 ---
 
-## Uso rápido
+## Uso
 
 ```python
 import sgs_peritos as sgs
-
-# Uma série, últimos 12 pontos (Meta Selic = código 432)
-sgs.get(432, last=12)
-
-# Várias séries nomeadas, a partir de uma data
-sgs.get({"selic": 432, "ipca": 433, "igpm": 189}, start="2024-01-01")
-
-# Período fechado
-sgs.get(20749, start="2020-01-01", end="2024-12-31")  # juros veículo PF (% a.a.)
-
-# JSON bruto da API, sem pandas
-sgs.get(432, last=1, output="text")
-```
-
-### Catálogo de códigos para peritos
-
-```python
 from sgs_peritos import catalogo
 
-catalogo.listar()                     # imprime todos os códigos curados
-catalogo.codigo("veiculo_pf_mensal")  # -> 25471
-sgs.get(catalogo.codigo("ipca_12m"), last=1)
+# Taxa média de juros — crédito pessoal não consignado PF (% a.m.), últimos 12 meses
+sgs.get(catalogo.codigo("pf_pessoal_nao_consignado_mensal"), last=12)
+
+# Aquisição de veículos PF — anual e mensal juntos, a partir de uma data
+sgs.get(
+    {
+        "veiculo_pf_aa": catalogo.codigo("pf_veiculos_anual"),
+        "veiculo_pf_am": catalogo.codigo("pf_veiculos_mensal"),
+    },
+    start="2018-01-01",
+)
+
+# Achar todas as modalidades de consignado
+catalogo.buscar("consignado")
+
+# Listar um grupo inteiro
+catalogo.listar("juros_pf")    # juros_pf | juros_pj | juros_geral | indices_macro
 ```
 
-Códigos incluídos (validados ao vivo contra a API do BCB):
-
-| Chave | Código | Série | Unidade |
-|---|---|---|---|
-| `selic_meta` | 432 | Meta Selic (Copom) | % a.a. |
-| `selic_diaria` | 11 | Selic diária | % a.d. |
-| `selic_mes_anualizada` | 4189 | Selic acum. mês anualizada (base 252) | % a.a. |
-| `selic_acum_mes` | 4390 | Selic acumulada no mês | % a.m. |
-| `cdi_diaria` | 12 | CDI diária | % a.d. |
-| `cdi_acum_mes` | 4391 | CDI acumulada no mês | % a.m. |
-| `ipca_mensal` | 433 | IPCA — variação mensal | % |
-| `ipca_12m` | 13522 | IPCA — acumulado 12 meses | % |
-| `inpc_mensal` | 188 | INPC — variação mensal | % |
-| `igpm_mensal` | 189 | IGP-M — variação mensal | % |
-| `dolar_ptax_compra` | 1 | Dólar PTAX — compra | R$ |
-| `veiculo_pf_anual` | 20749 | Juros aquisição de veículos — PF | % a.a. |
-| `veiculo_pf_mensal` | 25471 | Juros aquisição de veículos — PF | % a.m. |
-| `veiculo_pj_anual` | 20728 | Juros aquisição de veículos — PJ | % a.a. |
-| `veiculo_pj_mensal` | 25447 | Juros aquisição de veículos — PJ | % a.m. |
-
-### Inadimplência por estado/região
+### Inadimplência por estado/região (útil em perícia trabalhista e bancária)
 
 ```python
 from sgs_peritos.regional_economy import get_non_performing_loans
 from sgs_peritos import BRAZILIAN_REGIONS
 
-get_non_performing_loans(["GO"], mode="PF", last=12)        # Goiás, pessoa física
+get_non_performing_loans(["GO"], mode="PF", last=12)
 get_non_performing_loans(BRAZILIAN_REGIONS["NE"], mode="PJ", last=6)
 ```
 
-### Script pronto: taxas de financiamento de veículo
-
-Gera um CSV (UTF-8 com BOM, separador `;`, decimal com vírgula — pronto para
-Excel) com a série histórica das taxas PF e PJ, anual e mensal:
+### Script pronto: CSV de taxas de financiamento de veículo
 
 ```bash
 python exemplos/taxas_veiculo.py "C:\\saida"
 ```
 
+Gera CSV (UTF-8 com BOM, `;`, decimal com vírgula — pronto para Excel) com a
+série histórica completa PF/PJ, anual e mensal.
+
 ---
 
-## Como localizar o código de qualquer outra série
+## Como localizar qualquer outra série do SGS
 
 1. Localizador oficial do Bacen:
-   <https://www3.bcb.gov.br/sgspub/localizarseries/localizarSeries.do>
-2. Checar um código pela API:
+   <https://www3.bcb.gov.br/sgspub/>
+2. Nome oficial de um código:
+   `https://dadosabertos.bcb.gov.br/api/3/action/package_search?fq=codigo_sgs:{CODIGO}`
+3. Último valor:
    `https://api.bcb.gov.br/dados/serie/bcdata.sgs.{CODIGO}/dados/ultimos/1?formato=json`
+
+---
+
+## Créditos e licença
+
+Projeto **MIT**.
+
+O **motor de acesso ao SGS** (busca, download, parsing e montagem das séries em
+`DataFrame`, com retry e suporte assíncrono) é **derivado do projeto
+[`python-bcb`](https://github.com/wilsonfreitas/python-bcb), de Wilson Freitas**
+(© 2021, MIT) — o crédito da engenharia base é dele, e esta distribuição
+preserva o aviso de copyright original conforme exige a licença MIT.
+
+Sobre esse motor, o **`sgs-peritos`** acrescenta a camada de produto voltada à
+perícia: o pacote independente e focado em SGS, o **catálogo curado e validado
+de todas as taxas médias de juros por modalidade** (o que o perito realmente
+usa), a reorganização para uso forense e os exemplos prontos. Essa curadoria é
+de **Edilson Aguiais** (© 2026).
+
+Veja o arquivo [`LICENSE`](LICENSE) (atribuição dupla).
 
 ---
 
 ## Isenção de responsabilidade
 
-Software fornecido "como está", sem garantias. Os dados são de
-responsabilidade do Banco Central do Brasil. A conferência da série correta
-para cada finalidade pericial é responsabilidade do usuário.
+Software fornecido "como está", sem garantias. Os dados são de responsabilidade
+do Banco Central do Brasil. A conferência da série correta para cada finalidade
+pericial é responsabilidade do usuário.

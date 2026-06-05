@@ -5,14 +5,18 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "sgs-peritos"
 version = "1.0.0"
-description = "Acesso simples as series temporais do SGS (Banco Central) para peritos"
+description = "Taxas medias de juros e series do SGS (Banco Central) para pericia bancaria e trabalhista"
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
 authors = [
     { name = "Edilson Aguiais" },
 ]
-keywords = ["bacen", "bcb", "sgs", "series-temporais", "pericia", "selic", "ipca", "taxa-de-juros"]
+keywords = [
+    "bacen", "bcb", "sgs", "series-temporais", "pericia", "pericia-bancaria",
+    "pericia-trabalhista", "taxa-media-de-juros", "revisional", "superendividamento",
+    "selic", "ipca",
+]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Financial and Insurance Industry",
